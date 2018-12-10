@@ -5,6 +5,17 @@ spl_autoload_register(
     }
 );
 
+$mapFile = fopen("map", "r") or die("Unable to open map file");
+
+$i = 0;
+$lines;
+while(!feof($mapFile)) {
+    $lines[$i] = explode('-', str_replace(' ', '', fgets($mapFile)));
+    $i++;
+}
+
+//TODO: extract data from config file and handle logic for each type
+
 $map = new Map(3, 4);
 $aventurier = new Aventurier("Turuk", 1, 3, "S", "ADAAA");
 $tresor = new Tresor(2, 3, 1);
