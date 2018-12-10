@@ -1,6 +1,6 @@
 <?php
 
-class Monstre extends Coordonnees
+class Monstre extends Base
 {
     protected $niveau;
     protected $nbDeplacements;

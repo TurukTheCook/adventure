@@ -1,6 +1,6 @@
 <?php
 
-class Tresor extends Coordonnees
+class Tresor extends Base
 {
     public function __construct($x, $y, $nombre) {
         $this->setX($x);

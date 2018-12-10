@@ -1,6 +1,6 @@
 <?php
 
-class Coordonnees
+class Base
 {
     protected $x;
     protected $y;

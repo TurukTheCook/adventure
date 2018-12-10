@@ -1,6 +1,6 @@
 <?php
 
-class Aventurier extends Coordonnees
+class Aventurier extends Base
 {
     public function __construct($nom, $x, $y, $orientation, $seqMouvements) {
         $this->setNom($nom);
