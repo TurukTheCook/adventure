@@ -1,43 +1,51 @@
 <?php
+error_reporting(0);
 spl_autoload_register(
     function ($class) {
         include $class.'.php';
     }
 );
-
-//TODO: extract data from config file and handle logic for each type
-
-
-$aventurier = new Aventurier("Turuk", 1, 3, "S", "ADAAA");
-$tresor = new Tresor(2, 3, 1);
-$gob = new Gobelin(0, 3, 1, 2);
-$orc = new Orc(1, 0, 1, 1);
+if (!$argv[1]) {
+    echo "You must provide a map file.\n";
+    die();
+}
 
 $config = new Config();
-$config->readFile("map");
+$config->readFile($argv[1]);
 $params = $config->getConfig();
 
-$map = null;
+$map;
 
-for ($i = 0; $i < $config; $i++) {
-    switch ($config[$i][0]) {
-        case 'C':
-            $map = new Map($config[$i][1], $config[$i][2]);
+for ($i = 0; $i < count($params); $i++) {
+    switch(substr($params[$i][0], 0, 1)) {
+        case "C":
+            $map = new Map(intval($params[$i][1]), intval($params[$i][2]));
             $map->generateEmptyMap();
             break;
-        case 'M':
-            $map->populateMap($config[$i][1], $config[$i][2], "M");
+        case "A":
+            $aventurier = new Aventurier($params[$i][1], intval($params[$i][2]), intval($params[$i][3]), $params[$i][4], $params[$i][5]);
+            $map->populateMap($aventurier->getX(), $aventurier->getY(), $aventurier);
             break;
-        case 'A':
-            echo "i égal 2";
+        case "T":
+            $tresor = new Tresor(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]));
+            $map->populateMap($tresor->getX(), $tresor->getY(), $tresor);
+            break;
+        case "G":
+            $gob = new Gobelin(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]), intval($params[$i][4]));
+            $map->populateMap($gob->getX(), $gob->getY(), $gob);
+            break;
+        case "O":
+            $orc = new Orc(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]), ntval($params[$i][4]));
+            $map->populateMap($orc->getX(), $orc->getY(), $orc);
+            break;
+        case "M":
+            $map->populateMap(intval($params[$i][1]), intval($params[$i][2]), "M");
+            break;
+        default:
             break;
     }
 }
 
-
-$map->populateMap(0, 1, "M");
-$map->populateMap(0, 2, "M");
-$map->populateMap(1, 2, "M");
 $map->displayMap();
 
 ?>

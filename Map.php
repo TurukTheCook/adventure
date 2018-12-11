@@ -34,7 +34,11 @@ class Map extends Base
     public function displayMap() {
         for ($i = 0; $i < $this->y; $i++) {
             for ($j = 0; $j < $this->x; $j++) {
-                echo $this->map[$i][$j];
+                if (gettype($this->map[$i][$j]) == 'object') {
+                    echo $this->map[$i][$j]->getDisplay();
+                } else {
+                    echo $this->map[$i][$j];
+                }
                 echo "\t";
             }
             echo PHP_EOL; // php constant for correct end of line (\n)

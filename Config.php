@@ -15,7 +15,7 @@ class Config
      * Operations
      */
     public function readFile($file) {
-        $mapFile = fopen($file, "r") or die("Unable to open map file");
+        $mapFile = fopen($file, "r") or die("Unable to open map file\n");
 
         $i = 0;
         while(!feof($mapFile)) { // feof test end of file on the pointer

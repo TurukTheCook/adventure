@@ -8,6 +8,7 @@ class Aventurier extends Base
         $this->setY($y);
         $this->setOrientation($orientation);
         $this->setSeqMouvements($seqMouvements);
+        $this->setDisplay("A(".substr($this->getNom(), 0, 3).")");
     }
 
     private $nom;

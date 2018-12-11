@@ -4,6 +4,19 @@ class Base
 {
     protected $x;
     protected $y;
+    protected $display;
+
+    /**
+     * display [Getter & Setter]
+     */
+    public function getDisplay() {
+        return $this->display;
+    }
+
+    public function setDisplay($display) {
+        $this->display = $display;
+        return $this;
+    }
 
     /**
      * x [Getter & Setter]

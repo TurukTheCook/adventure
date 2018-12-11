@@ -7,6 +7,7 @@ class Gobelin extends Monstre
         $this->setY($y);
         $this->setNiveau($niveau);
         $this->setNbDeplacements($nbDeplacements);
+        $this->setDisplay('G');
     }
 }
 
