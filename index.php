@@ -35,7 +35,7 @@ for ($i = 0; $i < count($params); $i++) {
             $map->populateMap($gob->getX(), $gob->getY(), $gob);
             break;
         case "O":
-            $orc = new Orc(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]), ntval($params[$i][4]));
+            $orc = new Orc(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]), intval($params[$i][4]));
             $map->populateMap($orc->getX(), $orc->getY(), $orc);
             break;
         case "M":
