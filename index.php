@@ -1,10 +1,11 @@
 <?php
-error_reporting(0);
+// error_reporting(0);
 spl_autoload_register(
     function ($class) {
         include $class.'.php';
     }
 );
+
 if (!$argv[1]) {
     echo "You must provide a map file.\n";
     die();
@@ -12,9 +13,14 @@ if (!$argv[1]) {
 
 $config = new Config();
 $config->readFile($argv[1]);
-$params = $config->getConfig();
+
+/**
+ * MAP SEEDING
+ */
 
 $map;
+$entities = array();
+$params = $config->getConfig();
 
 for ($i = 0; $i < count($params); $i++) {
     switch(substr($params[$i][0], 0, 1)) {
@@ -25,18 +31,22 @@ for ($i = 0; $i < count($params); $i++) {
         case "A":
             $aventurier = new Aventurier($params[$i][1], intval($params[$i][2]), intval($params[$i][3]), $params[$i][4], $params[$i][5]);
             $map->populateMap($aventurier->getX(), $aventurier->getY(), $aventurier);
+            array_push($entities, $aventurier);
             break;
         case "T":
             $tresor = new Tresor(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]));
             $map->populateMap($tresor->getX(), $tresor->getY(), $tresor);
+            array_push($entities, $tresor);
             break;
         case "G":
-            $gob = new Gobelin(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]), intval($params[$i][4]));
+            $gob = new Gobelin(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]), isset($params[$i][4]) ? intval($params[$i][4]) : null);
             $map->populateMap($gob->getX(), $gob->getY(), $gob);
+            array_push($entities, $gob);
             break;
         case "O":
             $orc = new Orc(intval($params[$i][1]), intval($params[$i][2]), intval($params[$i][3]), intval($params[$i][4]));
             $map->populateMap($orc->getX(), $orc->getY(), $orc);
+            array_push($entities, $orc);
             break;
         case "M":
             $map->populateMap(intval($params[$i][1]), intval($params[$i][2]), "M");
@@ -45,6 +55,32 @@ for ($i = 0; $i < count($params); $i++) {
             break;
     }
 }
+
+$config->setEntities($entities);
+$entities = null;
+$params = null;
+
+/**
+ * GAME LOOP
+ */
+
+$mouvLen = array();
+$entities = $config->getEntities();
+
+for ($i = 0; $i < count($entities); $i++) {
+    if (substr($entities[$i]->getDisplay(), 0, 1) == "A") {
+        // $temp = str_split($params[$i][5]);
+        // $mouvLen = count($temp) - 1;
+        $mouvLen = strlen($entities[$i]->getSeqMouvements());
+        var_dump($mouvLen);
+        die();
+        break;
+    }
+}
+
+// for ($i = 0; $i <= $mouvLen; $i++) {
+//     // TODO: iterate through entities and move hero / monsters
+// }
 
 $map->displayMap();
 
