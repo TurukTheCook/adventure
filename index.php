@@ -1,5 +1,5 @@
 <?php
-// error_reporting(0);
+// error_reporting(0); // override php config for this script
 spl_autoload_register(
     function ($class) {
         include $class.'.php';
@@ -64,19 +64,15 @@ $params = null;
  * GAME LOOP
  */
 
-$mouvLen = array();
-$entities = $config->getEntities();
+// $mouvLen = array();
+// $entities = $config->getEntities();
 
-for ($i = 0; $i < count($entities); $i++) {
-    if (substr($entities[$i]->getDisplay(), 0, 1) == "A") {
-        // $temp = str_split($params[$i][5]);
-        // $mouvLen = count($temp) - 1;
-        $mouvLen = strlen($entities[$i]->getSeqMouvements());
-        var_dump($mouvLen);
-        die();
-        break;
-    }
-}
+// for ($i = 0; $i < count($entities); $i++) {
+//     if (substr($entities[$i]->getDisplay(), 0, 1) == "A") {
+//         $mouvLen = strlen($entities[$i]->getSeqMouvements());
+//         break;
+//     }
+// }
 
 // for ($i = 0; $i <= $mouvLen; $i++) {
 //     // TODO: iterate through entities and move hero / monsters
