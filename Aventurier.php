@@ -50,6 +50,13 @@ class Aventurier extends Base
         $this->seqMouvements = $seqMouvements;
         return $this;
     }
+
+    /**
+     * Operations
+     */
+    public function move() {
+        echo "Aventurier a bougé.. \n";
+    }
 }
 
 ?>
