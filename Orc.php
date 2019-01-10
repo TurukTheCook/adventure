@@ -13,8 +13,9 @@ class Orc extends Monstre
         }
         $this->position = 0;
         $this->orientation = true;
-        $this->state = "L";
+        $this->state = 'L';
         $this->display = 'O';
+        $this->genre = 'M';
     }
 
     /**
@@ -27,21 +28,7 @@ class Orc extends Monstre
         
         $this->checkOrientation();
         
-        if ($this->position < $this->nbDeplacements && $this->orientation) {
-            $currentMap = $map->getMap();
-
-            switch ($currentMap[($this->y + 1)][$this->x]) {
-                case 'M':
-                    $this->orientation = false;
-                    $this->moveMonsterReverse($map, 'O');
-                    break ;
-                default:
-                    $this->moveMonster($map, 'O');
-                    break ;
-            }
-        } else if ($this->position > 0) {
-            $this->moveMonsterReverse($map, 'O');
-        }
+        $this->handleMovement($map, 'O');
     }
 }
 

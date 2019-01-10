@@ -13,8 +13,9 @@ class Gobelin extends Monstre
         }
         $this->position = 0;
         $this->orientation = true;
-        $this->state = "L";
+        $this->state = 'L';
         $this->display = 'G';
+        $this->genre = 'M';
     }
 
     /**
@@ -26,22 +27,8 @@ class Gobelin extends Monstre
         }
         
         $this->checkOrientation();
-        
-        if ($this->position < $this->nbDeplacements && $this->orientation) {
-            $currentMap = $map->getMap();
 
-            switch ($currentMap[$this->y][($this->x + 1)]) {
-                case 'M':
-                    $this->orientation = false;
-                    $this->moveMonsterReverse($map, 'G');
-                    break ;
-                default:
-                    $this->moveMonster($map, 'G');
-                    break ;
-            }
-        } else if ($this->position > 0) {
-            $this->moveMonsterReverse($map, 'G');
-        }
+        $this->handleMovement($map, 'G');
     }
 }
 

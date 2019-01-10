@@ -7,6 +7,7 @@ class Tresor extends Base
         $this->setY($y);
         $this->setNombre($nombre);
         $this->setDisplay("T(".$this->getNombre().")");
+        $this->genre = 'T';
     }
 
     private $nombre;

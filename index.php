@@ -87,7 +87,7 @@ $mouvMax = max($mouvLen);
 // display map before mouvements
 echo "Map initial state:\n";
 $map->displayMap();
-sleep(2);
+sleep(1);
 
 // iterate through entities and move adventurers / monsters
 for ($i = 0; $i < $mouvMax; $i++) {
@@ -97,7 +97,7 @@ for ($i = 0; $i < $mouvMax; $i++) {
     echo "Round: ".$i."\n";
     $map->displayMap();
     echo "\n";
-    sleep(2);
+    sleep(1);
 }
 
 ?>

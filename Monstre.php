@@ -2,23 +2,9 @@
 
 class Monstre extends Base
 {
-    protected $niveau;
     protected $nbDeplacements;
     protected $position;
     protected $orientation;
-    protected $state;
-
-    /**
-     * State [Getter & Setter]
-     */
-    public function getState() {
-        return $this->state;
-    }
-
-    public function setState($state) {
-        $this->state = $state;
-        return $this;
-    }
 
     /**
      * Position [Getter & Setter]
@@ -45,18 +31,6 @@ class Monstre extends Base
     }
 
     /**
-     * niveau [Getter & Setter]
-     */
-    public function getNiveau() {
-        return $this->niveau;
-    }
-
-    public function setNiveau($niveau) {
-        $this->niveau = $niveau;
-        return $this;
-    }
-
-    /**
      * nbDeplacements [Getter & Setter]
      */
     public function getNbDeplacements() {
@@ -79,33 +53,109 @@ class Monstre extends Base
         }
     }
 
-    public function moveMonster($map, $type) {
+    public function moveForward($map, $type) {
+        $this->handleTreasure($map);
+
         if ($type == 'O') {
             $map->populateMap($this->x, ($this->y + 1), $this);
-            $map->populateMap($this->x, $this->y, '.');
             $this->y += 1;
         } else if ($type == 'G') {
             $map->populateMap(($this->x + 1), $this->y, $this);
-            $map->populateMap($this->x, $this->y, '.');
             $this->x += 1;
         }
+
         $this->position += 1;
     }
 
-    public function moveMonsterReverse($map, $type) {
+    public function moveBackard($map, $type) {
         if ($this->position <= 0) {
             return ;
         }
+
+        $this->handleTreasure($map);
+
         if ($type == 'O') {
             $map->populateMap($this->x, ($this->y - 1), $this);
-            $map->populateMap($this->x, $this->y, '.');
             $this->y -= 1;
         } else if ($type == 'G') {
             $map->populateMap(($this->x - 1), $this->y, $this);
-            $map->populateMap($this->x, $this->y, '.');
             $this->x -= 1;
         }
+
         $this->position -= 1;
+    }
+
+    public function handleTreasure($map) {
+        if ($this->isOnTreasure) {
+            $this->isOnTreasure = false;
+            $map->populateMap($this->x, $this->y, $this->treasure);
+            $this->treasure = null;
+        } else {
+            $map->populateMap($this->x, $this->y, '.');
+        }
+    }
+
+    public function handleMovement($map, $type) {
+        $currentMap = $map->getMap();
+        $next = null;
+        if ($this->orientation) {
+            if ($type == 'O') {
+                $next = $currentMap[($this->y + 1)][$this->x];
+            } else if ($type == 'G') {
+                $next = $currentMap[$this->y][($this->x + 1)];
+            }
+
+            if (gettype($next) == 'object') {
+                if ($next->getGenre() == 'T') {
+                    $this->moveForward($map, $type);
+                    $this->isOnTreasure = true;
+                    $this->treasure = $next;
+                } else if ($next->getGenre() == 'A') {
+                    $this->fight($map, $type, $next);
+                    if ($this->state == 'L') {
+                        $this->moveForward($map, $type);
+                    }
+                }
+            } else {
+                if ($next == 'M') {
+                    $this->orientation = false;
+                    $this->moveBackard($map, $type);
+                } else {
+                    $this->moveForward($map, $type);
+                }
+            }
+        } else {
+            if ($type == 'O') {
+                $next = $currentMap[($this->y - 1)][$this->x];
+            } else if ($type == 'G') {
+                $next = $currentMap[$this->y][($this->x - 1)];
+            }
+
+            if (gettype($next) == 'object') {
+                if ($next->getGenre() == 'T') {
+                    $this->moveBackard($map, $type);
+                    $this->isOnTreasure = true;
+                    $this->treasure = $next;
+                } else if ($next->getGenre() == 'A') {
+                    $this->fight($map, $type, $next);
+                    if ($this->state == 'L') {
+                        $this->moveBackard($map, $type);
+                    }
+                }
+            } else {
+                $this->moveBackard($map, $type);
+            }
+        }
+    }
+
+    public function fight($map, $type, $next) {
+        if ($this->niveau <= $next->getNiveau()) {
+            $this->state = 'D';
+            $this->handleTreasure($map);
+            $next->setNiveau($next->getNiveau() + 1);
+        } else {
+            $next->setState('D');
+        }
     }
 }
 
